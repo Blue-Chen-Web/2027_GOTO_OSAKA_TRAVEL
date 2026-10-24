@@ -3,267 +3,467 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2027 大阪家族之旅｜7天6夜互動行程手冊</title>
+  <title>2027 大阪家族大冒險｜8-BIT 任務時間軸攻略本</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- 引入復古像素英文字體與日系點陣漢字字體 -->
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+TC:wght@500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; margin: 0; }
+    :root {
+      --bg-dark: #0d0e15;
+      --panel-bg: #181a28;
+      --panel-border: #ffffff;
+      --neon-gold: #ffd700;
+      --neon-cyan: #00f5d4;
+      --neon-pink: #ff2a85;
+      --neon-green: #38b000;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(#252942 1px, transparent 1px),
+        linear-gradient(to bottom, #0d0e15 0%, #141726 100%);
+      background-size: 20px 20px, 100% 100%;
+      color: #f1f5f9;
+      font-family: 'DotGothic16', 'Noto Sans TC', monospace, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .font-pixel-en {
+      font-family: 'Press Start 2P', 'DotGothic16', monospace;
+    }
+
+    /* CRT 掃描線復古螢幕濾鏡 */
+    .crt-overlay {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+      );
+      background-size: 100% 4px;
+    }
+
+    /* 8-Bit 像素邊框容器 */
+    .pixel-box {
+      background-color: var(--panel-bg);
+      border: 4px solid #ffffff;
+      box-shadow: 
+        0 0 0 4px #000000,
+        6px 6px 0 4px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .pixel-box-gold {
+      background-color: #1f1b24;
+      border: 4px solid var(--neon-gold);
+      box-shadow: 
+        0 0 0 4px #000000,
+        6px 6px 0 4px rgba(255, 215, 0, 0.25);
+    }
+
+    /* 復古立體按鍵 */
+    .pixel-btn {
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 0 #000000;
+      transition: transform 0.08s, box-shadow 0.08s;
+      text-transform: uppercase;
+    }
+    .pixel-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #000000;
+    }
+    .pixel-btn.active-tab {
+      background-color: var(--neon-gold) !important;
+      color: #000000 !important;
+      border-color: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.7), 0 4px 0 #997a00;
+    }
+
+    /* 強化版 RPG 時間軸軌道與節點 */
+    .timeline-track {
+      position: relative;
+      padding-left: 2.75rem;
+    }
+    .timeline-track::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      bottom: 12px;
+      left: 15px;
+      width: 6px;
+      background: repeating-linear-gradient(
+        to bottom,
+        var(--neon-cyan) 0px,
+        var(--neon-cyan) 10px,
+        #1e293b 10px,
+        #1e293b 16px
+      );
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.5);
+    }
+
+    .timeline-node {
+      position: absolute;
+      left: 4px;
+      top: 18px;
+      width: 28px;
+      height: 28px;
+      background-color: #0d0e15;
+      border: 4px solid var(--neon-gold);
+      box-shadow: 0 0 0 3px #000, 0 0 12px var(--neon-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+
+    .quest-card {
+      background-color: #21253a;
+      border: 3px solid #475569;
+      box-shadow: 4px 4px 0 #000000;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .quest-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateX(4px);
+    }
+
+    /* 破關完成狀態 (Stage Cleared) */
+    .quest-cleared .quest-card {
+      background-color: #132a1f;
+      border-color: #38b000;
+    }
+    .quest-cleared .timeline-node {
+      background-color: #38b000;
+      border-color: #ffffff;
+      box-shadow: 0 0 0 3px #000, 0 0 12px #38b000;
+    }
+
+    /* 閃爍動畫 */
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.2; }
+    }
+    .animate-blink {
+      animation: blink 1.2s infinite;
+    }
+
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="text-slate-800 pb-16">
+<body class="pb-20">
 
-  
-  <!-- 頂部主視覺 Hero Banner -->
-  <header class="relative bg-gradient-to-br from-rose-600 via-red-600 to-amber-500 text-white shadow-lg overflow-hidden">
-    <div class="max-w-4xl mx-auto px-5 py-8 relative z-10">
-      <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium mb-3">
-        <span>🇯🇵 2027/01/24 (日) – 01/30 (六)</span>
-        <span>•</span>
-        <span>6大3小 (4歲、6歲、8歲)</span>
+  <!-- CRT 電視掃描線濾鏡 -->
+  <div id="crt-layer" class="crt-overlay"></div>
+
+  <!-- 頂部街機狀態列 (HUD Header) -->
+  <header class="border-b-4 border-white bg-[#111320] sticky top-0 z-40 shadow-2xl">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="bg-rose-600 text-white font-pixel-en text-[10px] px-2.5 py-1.5 border-2 border-white shadow">1P START</span>
+        <div>
+          <h1 class="text-lg md:text-2xl font-black tracking-wider text-amber-300 drop-shadow-[2px_2px_0_#000]">
+            👾 2027 大阪家族大冒險 <span class="text-xs text-cyan-300 font-pixel-en">VER 2027.1</span>
+          </h1>
+          <p class="text-xs text-slate-300">2027/01/24 (日) – 01/30 (六)｜勇者隊伍：6大3小 (8歲/6歲/4歲)</p>
+        </div>
       </div>
-      <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2">2027 大阪・京都・奈良家族之旅</h1>
-      <p class="text-white/90 text-sm md:text-base">連住 6 晚難波 HOTEL K6 Osaka Namba｜包車輕鬆遊 × 周遊卡精華攻略</p>
 
-      <!-- 航班與住宿快速資訊卡 -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6 text-xs bg-black/20 backdrop-blur-md p-4 rounded-2xl border border-white/15">
-        <div>
-          <div class="text-amber-200 font-bold mb-1">🛫 去程航班 (1/24)</div>
-          <div class="font-semibold">亞洲航空 AirAsia X (AK176)</div>
-          <div class="text-white/80">15:40 桃園 T1 ➔ 19:30 關西 T1</div>
+      <!-- 全域任務破關進度條 (EXP Bar) + CRT 開關 -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+        <div class="flex items-center gap-2 bg-black/60 px-3 py-1.5 border-2 border-slate-500">
+          <span class="font-pixel-en text-[10px] text-amber-400">EXP</span>
+          <div class="w-28 md:w-36 h-3.5 bg-slate-800 border border-white p-0.5">
+            <div id="global-exp-bar" class="h-full bg-gradient-to-r from-green-500 to-emerald-300 transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <span id="global-exp-text" class="font-pixel-en text-[10px] text-green-400">0%</span>
         </div>
-        <div>
-          <div class="text-amber-200 font-bold mb-1">🛬 回程航班 (1/30)</div>
-          <div class="font-semibold">中華航空 China Airlines (CI0153)</div>
-          <div class="text-white/80">14:30 關西 T1 ➔ 16:45 桃園 T2</div>
-        </div>
-        <div>
-          <div class="text-amber-200 font-bold mb-1">🏨 下榻飯店 (連住6晚)</div>
-          <div class="font-semibold">HOTEL K6 Osaka Namba</div>
-          <div class="text-white/80">大阪市中央區道頓堀 2-5-15 (近難波站25號出口)</div>
+        <button onclick="toggleCRT()" id="crt-btn" class="pixel-btn bg-slate-700 text-xs px-2.5 py-1 text-cyan-300" title="切換復古電視掃描線">
+          📺 CRT: ON
+        </button>
+      </div>
+    </div>
+
+    <!-- 關卡選擇導覽列 (Stage Select Tabs) -->
+    <div class="bg-[#181b2e] border-t-2 border-slate-700">
+      <div class="max-w-5xl mx-auto px-4">
+        <div class="flex items-center gap-2 py-2.5 overflow-x-auto no-scrollbar" id="stage-tabs">
+          <button onclick="switchStage('all')" id="tab-all" class="pixel-btn active-tab shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">🌟 全關卡總覽</button>
+          <button onclick="switchStage('d1')" id="tab-d1" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 1 (1/24 日)</button>
+          <button onclick="switchStage('d2')" id="tab-d2" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 2 (1/25 一)</button>
+          <button onclick="switchStage('d3')" id="tab-d3" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 3 (1/26 二)</button>
+          <button onclick="switchStage('d4')" id="tab-d4" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 4 (1/27 三)</button>
+          <button onclick="switchStage('d5')" id="tab-d5" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 5 (1/28 四)</button>
+          <button onclick="switchStage('d6')" id="tab-d6" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 6 (1/29 五)</button>
+          <button onclick="switchStage('d7')" id="tab-d7" class="pixel-btn shrink-0 px-3 py-1.5 text-xs font-bold bg-slate-800 text-white">STAGE 7 (1/30 六)</button>
+          <button onclick="switchStage('shop')" id="tab-shop" class="pixel-btn shrink-0 px-3.5 py-1.5 text-xs font-bold bg-rose-700 text-amber-200">🪙 金幣與裝備結算所</button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- 黏性導覽列 (切換行程 / 預算表) -->
-  <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="flex items-center space-x-2 py-3 overflow-x-auto no-scrollbar" id="nav-tabs">
-        <button onclick="switchTab('all')" id="tab-all" class="tab-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-bold bg-rose-600 text-white shadow-sm transition">全部行程</button>
-        <button onclick="switchTab('d1')" id="tab-d1" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/24 (日) D1</button>
-        <button onclick="switchTab('d2')" id="tab-d2" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/25 (一) D2</button>
-        <button onclick="switchTab('d3')" id="tab-d3" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/26 (二) D3</button>
-        <button onclick="switchTab('d4')" id="tab-d4" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/27 (三) D4</button>
-        <button onclick="switchTab('d5')" id="tab-d5" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/28 (四) D5</button>
-        <button onclick="switchTab('d6')" id="tab-d6" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/29 (五) D6</button>
-        <button onclick="switchTab('d7')" id="tab-d7" class="tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition">1/30 (六) D7</button>
-        <button onclick="switchTab('budget')" id="tab-budget" class="tab-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-bold bg-amber-100 text-amber-800 hover:bg-amber-200 transition">💰 費用與家庭分攤</button>
+  <main class="max-w-5xl mx-auto px-4 mt-6 space-y-10">
+
+    <!-- 勇者基地營與飛行載具資訊 (Base Camp & Airship Info) -->
+    <section id="base-info" class="pixel-box p-4 md:p-5">
+      <div class="flex items-center justify-between border-b-2 border-dashed border-slate-600 pb-2 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-amber-400 animate-blink">▶</span>
+          <h2 class="font-pixel-en text-xs md:text-sm text-amber-400">PARTY STATUS & AIRSHIP DATA (航班與基地情報)</h2>
+        </div>
+        <button onclick="resetProgress()" class="text-xs text-rose-400 hover:underline">🔄 重置打卡紀錄</button>
       </div>
-    </div>
-  </nav>
 
-  <!-- 主內容區 -->
-  <main class="max-w-4xl mx-auto px-4 mt-6 space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm">
+        <div class="bg-black/50 p-3.5 border-2 border-cyan-500/60">
+          <div class="text-cyan-300 font-bold mb-1">🛫 去程飛空艇 (1/24 日)</div>
+          <div class="text-white font-bold text-base">AirAsia X [AK176]</div>
+          <div class="text-amber-300 mt-1">🕒 15:40 桃園 T1 ➔ 19:30 關西 T1</div>
+          <div class="text-slate-400 text-xs mt-1">高鐵 630 班次 (台南 11:13 / 嘉義 11:32)</div>
+        </div>
+        <div class="bg-black/50 p-3.5 border-2 border-pink-500/60">
+          <div class="text-pink-300 font-bold mb-1">🛬 回程飛空艇 (1/30 六)</div>
+          <div class="text-white font-bold text-base">中華航空 [CI 0153]</div>
+          <div class="text-amber-300 mt-1">🕒 14:30 關西 T1 ➔ 16:45 桃園 T2</div>
+          <div class="text-slate-400 text-xs mt-1">10:30 飯店門口專車送機直達關西 T1</div>
+        </div>
+        <div class="bg-black/50 p-3.5 border-2 border-amber-400/60">
+          <div class="text-amber-300 font-bold mb-1">🏰 連住 6 晚勇者基地 (存檔點)</div>
+          <div class="text-white font-bold text-base">HOTEL K6 Osaka Namba</div>
+          <div class="text-emerald-300 mt-1">📍 大阪市中央區道頓堀 2-5-15</div>
+          <div class="text-slate-400 text-xs mt-1">近難波站 24/25 號電梯出口 (步行 3-4 分)</div>
+        </div>
+      </div>
+      <p class="text-xs text-cyan-300 mt-3 flex items-center gap-1.5">
+        <span>💡 遊戲操作提示：點擊下方時間軸上的任一「任務卡片」，即可標記為</span>
+        <span class="bg-green-700 text-white px-1.5 py-0.5 font-pixel-en text-[10px]">CLEARED!</span>
+        <span>完成打卡！</span>
+      </p>
+    </section>
 
-    <!-- 每日行程容器 -->
-    <div id="itinerary-container" class="space-y-8"></div>
+    <!-- 每日任務時間軸容器 (Stages & Timelines) -->
+    <div id="stages-container" class="space-y-12"></div>
 
-    <!-- 費用估算與家庭分攤專區 -->
-    <section id="budget-section" class="space-y-6">
-      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-          <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full">匯率預設 0.215</span>
-            <h2 class="text-2xl font-black mt-2">💰 個人與三家庭費用精算表</h2>
-            <p class="text-sm text-slate-500 mt-1">6位大人使用「大阪周遊卡2日券(¥5,000)」；8歲買兒童票、6歲享日本學齡前地鐵免費、4歲幼童多數免費。</p>
-          </div>
-          <!-- 互動開關 -->
-          <div class="flex flex-col gap-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-sm">
-            <label class="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-              <input type="checkbox" id="toggle-charter" checked onchange="renderBudget()" class="w-4 h-4 accent-rose-600 rounded">
-              <span>計入日本 3 趟包車 (每人 ¥9,660)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-              <input type="checkbox" id="toggle-optional" onchange="renderBudget()" class="w-4 h-4 accent-rose-600 rounded">
-              <span>計入和服＋萬博選配 (大人¥13,300/小孩¥7,200~7,700)</span>
-            </label>
-          </div>
+    <!-- 金幣結算所 (RPG Gold & Budget Calculator) -->
+    <section id="shop-section" class="pixel-box-gold p-5 md:p-6 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-amber-400/40 pb-4">
+        <div>
+          <div class="inline-block bg-amber-400 text-black font-pixel-en text-[10px] px-2.5 py-1 mb-2">ITEM & GOLD SHOP</div>
+          <h2 class="text-2xl font-black text-amber-300">🪙 勇者公會帳房｜個人與三家庭費用精算所</h2>
+          <p class="text-xs md:text-sm text-slate-300 mt-1">
+            匯率基準：<span class="text-cyan-300 font-bold">0.215</span>｜6位大人裝備「大阪周遊卡2日券 (¥5,000)」；6歲享日本學齡前地鐵免費。
+          </p>
         </div>
 
-        <!-- 三家庭應備總額卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6" id="family-cards"></div>
-
-        <!-- 每人費用匯總表 -->
-        <div class="mt-6 overflow-x-auto">
-          <table class="w-full text-sm text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-100 text-slate-700 font-bold">
-                <th class="p-3 rounded-tl-xl">分類 / 項目</th>
-                <th class="p-3 text-right">大人 (6位)</th>
-                <th class="p-3 text-right">8歲小童 (1位)</th>
-                <th class="p-3 text-right">6歲小童 (1位)</th>
-                <th class="p-3 text-right">4歲幼童 (1位)</th>
-                <th class="p-3 rounded-tr-xl">計費與周遊券說明</th>
-              </tr>
-            </thead>
-            <tbody id="budget-table-body" class="divide-y divide-slate-100"></tbody>
-          </table>
+        <!-- 裝備開關 (Toggles) -->
+        <div class="flex flex-col gap-2.5 bg-black/70 p-3.5 border-2 border-amber-400 text-xs md:text-sm">
+          <label class="flex items-center gap-2.5 cursor-pointer text-amber-200 font-bold">
+            <input type="checkbox" id="chk-charter" checked onchange="renderShop()" class="w-4 h-4 accent-amber-400">
+            <span>🚐 裝備 3 趟專屬包車 (每人 +¥9,660)</span>
+          </label>
+          <label class="flex items-center gap-2.5 cursor-pointer text-cyan-200 font-bold">
+            <input type="checkbox" id="chk-opt" onchange="renderShop()" class="w-4 h-4 accent-cyan-400">
+            <span>👘 裝備和服體驗＋萬博選配 (大人+¥13,300/小孩+¥7,200~7,700)</span>
+          </label>
         </div>
+      </div>
+
+      <!-- 三大公會分隊 (Family Guild Cards) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="guild-cards"></div>
+
+      <!-- 道具與門票明細表 -->
+      <div class="overflow-x-auto border-2 border-slate-600 bg-black/60">
+        <table class="w-full text-xs md:text-sm text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-800 text-amber-300 border-b-2 border-white">
+              <th class="p-3">關卡日期 / 道具項目</th>
+              <th class="p-3 text-right">大人 (×6)</th>
+              <th class="p-3 text-right">8歲劍士 (×1)</th>
+              <th class="p-3 text-right">6歲法師 (×1)</th>
+              <th class="p-3 text-right">4歲精靈 (×1)</th>
+              <th class="p-3">特殊效果 / 周遊券規則說明</th>
+            </tr>
+          </thead>
+          <tbody id="shop-table-body" class="divide-y divide-slate-800"></tbody>
+        </table>
       </div>
     </section>
 
   </main>
 
   <script>
-    const itineraryData = [
+    // 7 大關卡與強化時間軸資料 (完全對應試算表最新修正版)
+    const stagesData = [
       {
         id: 'd1',
-        day: 'Day 1',
+        stage: 'STAGE 01',
         date: '1/24 (日)',
-        title: '台灣出發 ➔ 關西機場包車直達難波・夜遊道頓堀',
-        fatigue: '★★★★☆',
-        badge: '專屬包車接機',
+        title: '台灣啟程 ➔ 關西機場包車直衝難波・夜遊道頓堀',
+        bossLevel: '★★★★☆',
+        hearts: '❤️❤️❤️❤️🖤',
+        badge: '主線啟程＋包車接機',
         img: 'https://www.planmyjapan.com/wp-content/uploads/2024/02/glico-man-8.jpg',
-        imgCaption: '難波道頓堀固力果跑跑人夜景（距離 K6 飯店步行僅約 5 分鐘）',
-        events: [
-          { time: '10:30', title: '台南整裝出發', desc: '預備前往台南高鐵站（距離起飛時間 5 小時）', tag: '台灣時間' },
-          { time: '11:00 / 11:13', title: '搭乘高鐵 630 班次前往桃園', desc: '11:00 抵達台南高鐵站，11:13 發車（嘉義 11:32）➔ 12:38 抵達桃園高鐵站', tag: '高鐵 $1,190/人' },
-          { time: '12:40 - 13:30', title: '轉乘桃園機場捷運至第一航廈', desc: '搭乘 12:47 或 13:02 機捷（車程19分鐘）直達 T1 航廈，拿機票、倒水、洗手間', tag: '機捷 $35/人' },
-          { time: '13:50 - 15:40', title: '辦理登機手續 (AirAsia X AK176)', desc: '亞航櫃台劃位、處理嬰兒推車托運、確認日本 VJW 入境手續與開啟 eSIM', tag: 'TPE T1 ➔ KIX T1' },
-          { time: '15:40 - 19:30', title: '飛往日本關西國際機場', desc: '飛行時間 2 小時 50 分（日本時差 +1 小時）。備妥小孩平板與耳罩避免耳鳴', tag: '飛行時間' },
-          { time: '20:00 - 21:00', title: '出關領行李・搭乘包車前往飯店', desc: '已預訂專車接機（車程約 60 分鐘）直達 HOTEL K6 Osaka Namba', tag: '包車 ¥14,940/車' },
-          { time: '21:00 ~', title: '入住飯店・道頓堀宵夜散步', desc: '放妥行李後出來心齋橋、道頓堀吃熱拉麵與章魚燒', tag: '步行可達' }
+        imgCaption: '📍 難波道頓堀霓虹夜景與固力果跑跑人（距 K6 基地步行 5 分鐘）',
+        quests: [
+          { id: 'q1_1', time: '10:30', duration: '30 MIN', icon: '🎒', title: '台南出發・整裝待命', desc: '全體確認護照、eSIM、行動電源與禦寒裝備，準備前往台南高鐵站（距起飛 5 小時）。', cost: '準備階段', highlight: false },
+          { id: 'q1_2', time: '11:00 - 12:38', duration: '98 MIN', icon: '🚄', title: '搭乘高鐵 630 班次北上桃園', desc: '11:00 抵達台南高鐵站，11:13 準時發車（嘉義 11:32 上車）➔ 12:38 抵達桃園高鐵站。', cost: '高鐵 $1,190 / 孩童 $595', highlight: true },
+          { id: 'q1_3', time: '12:40 - 13:30', duration: '50 MIN', icon: '🚇', title: '轉乘桃園機場捷運至第一航廈', desc: '搭乘 12:47 或 13:02 機場捷運（車程 19 分鐘）抵達桃機 T1，領機票、倒水、上洗手間。', cost: '機捷 $35 / 孩童 $18', highlight: false },
+          { id: 'q1_4', time: '13:50 - 15:40', duration: '110 MIN', icon: '🛂', title: 'AirAsia X (AK176) 櫃台報到與通關', desc: '辦理亞航櫃台劃位、嬰兒推車托運、確認日本 Visit Japan Web QR Code 與開啟 eSIM。', cost: 'TPE T1 ➔ KIX T1', highlight: false },
+          { id: 'q1_5', time: '15:40 - 19:30', duration: '170 MIN', icon: '✈️', title: '飛往日本關西國際機場', desc: '飛行時間 2 小時 50 分（日本時差 +1 小時）。機上備妥小孩平板與耳罩預防起降耳鳴。', cost: '空中移動', highlight: false },
+          { id: 'q1_6', time: '19:30 - 21:00', duration: '90 MIN', icon: '🚐', title: '出關領行李・搭乘包車直達 K6 飯店', desc: '19:30 降落，約 30 分鐘出關領行李；20:00 搭乘預約包車（車程約 60 分）直達飯店門口！', cost: '包車 ¥14,940 (每人¥1,660)', highlight: true },
+          { id: 'q1_7', time: '21:00 ~ Late', duration: 'FREE', icon: '🍜', title: '入住存檔・道頓堀與心齋橋宵夜巡禮', desc: 'HOTEL K6 Check-in 放妥行李，散步去道頓堀看跑跑人看板、吃熱呼呼拉麵與章魚燒。', cost: '步行 5 分鐘', highlight: false }
         ]
       },
       {
         id: 'd2',
-        day: 'Day 2',
+        stage: 'STAGE 02',
         date: '1/25 (一)',
-        title: '京都奈良包車一日遊：清水寺和服・伏見稻荷・奈良餵鹿',
-        fatigue: '★★★★☆',
-        badge: '10人座專車包車',
+        title: '古都雙城包車任務：清水寺和服・伏見稻荷・奈良小鹿',
+        bossLevel: '★★★★☆',
+        hearts: '❤️❤️❤️❤️🖤',
+        badge: '10人座專屬坐騎包車',
         img: 'https://asset.japanwondertravel.com/variants/7wsuma9SMnhTeUYv3mFEJMjF/fadc48cf46818f581aaa75ebd0b0a61baae78bad8b4e385cc980be80261a4312',
-        imgCaption: '京都世界遺產清水寺本堂與清水舞台',
-        events: [
-          { time: '08:00 - 09:10', title: '飯店出發前往京都清水寺', desc: '10 人座包車直接在 HOTEL K6 門口等候上車', tag: '包車 ¥58,950/車' },
-          { time: '09:10 - 11:30', title: '清水寺璃光和服店換裝', desc: '預約 09:30 挑選和服、著裝與髮型設計（內搭大V領發熱衣與暖暖包）', tag: '和服體驗' },
-          { time: '11:30 - 13:00', title: '穿和服漫步清水寺、二三年坂', desc: '古街拍照、沿途買熱包子與烤糰子墊肚子（清水寺門票：大人¥500/小學生¥200）', tag: '停留 90 分鐘' },
-          { time: '13:00 - 13:30', title: '歸還和服', desc: '換回保暖冬裝，準備上車前往伏見稻荷', tag: '準時歸還' },
-          { time: '13:50 - 14:50', title: '伏見稻荷大社・千本鳥居', desc: '車程約 20 分鐘抵達。拍千本鳥居、買屋台小吃，停留 60 分鐘', tag: '免門票' },
-          { time: '15:30 - 17:00', title: '奈良公園與小鹿互動', desc: '趕在 15:30 前抵達（避開天黑與冷風），餵鹿仙貝與拍照', tag: '免門票' },
-          { time: '17:00 - 18:00', title: '搭乘包車返回難波 K6 飯店', desc: '在車上溫暖補眠，約 18:00 抵達難波享用晚餐', tag: '車程 60 分鐘' }
+        imgCaption: '📍 京都世界遺產清水寺本堂舞台（換穿和服漫步二三年坂）',
+        quests: [
+          { id: 'q2_1', time: '08:00 - 09:10', duration: '70 MIN', icon: '🚐', title: '飯店門口搭乘 10 人座包車前往京都', desc: '10 人座大車於 K6 飯店門口等候，免去轉車搬推車之苦，車上補眠直奔清水寺。', cost: '包車 ¥58,950 (每人¥6,550)', highlight: true },
+          { id: 'q2_2', time: '09:10 - 11:30', duration: '140 MIN', icon: '👘', title: '清水寺「璃光和服店」全員換裝', desc: '預約 09:30 場次！6大3小挑選和服、著裝與編髮（內層務必穿大V領發熱衣+貼暖暖包）。', cost: '選配大人¥9,900/小孩¥5,500', highlight: true },
+          { id: 'q2_3', time: '11:30 - 13:00', duration: '90 MIN', icon: '⛩️', title: '穿和服漫步清水寺、二年坂、三年坂', desc: '古街石坂坡道全家福拍照，沿途買熱包子、烤醬油糰子、和牛串墊肚子。', cost: '清水寺門票 大人¥500/小童¥200', highlight: false },
+          { id: 'q2_4', time: '13:00 - 13:30', duration: '30 MIN', icon: '🔄', title: '歸還和服・換回保暖冬裝', desc: '13:00 準時返回和服店卸裝，保留體力準備前往伏見稻荷。', cost: '準時還衣', highlight: false },
+          { id: 'q2_5', time: '13:30 - 13:50', duration: '20 MIN', icon: '🚐', title: '包車移動前往伏見稻荷大社', desc: '上車吹暖氣休息，約 20 分鐘車程即可抵達稻荷大社停車場。', cost: '包車移動', highlight: false },
+          { id: 'q2_6', time: '13:50 - 14:50', duration: '60 MIN', icon: '🦊', title: '伏見稻荷大社・千本鳥居拍照與屋台小吃', desc: '停留整整 1 小時！與朱紅色千本鳥居及狐狸使者合照，品嚐參道熱食小吃。', cost: '免費參拜', highlight: true },
+          { id: 'q2_7', time: '14:50 - 15:30', duration: '40 MIN', icon: '🚐', title: '包車前往奈良公園', desc: '務必於 15:30 前抵達奈良，搶在冬季日落（17:00）與寒風變強前抵達。', cost: '包車移動', highlight: false },
+          { id: 'q2_8', time: '15:30 - 17:00', duration: '90 MIN', icon: '🦌', title: '奈良公園餵小鹿大作戰', desc: '買鹿仙貝與小鹿敬禮互動拍照，平坦草地散步 90 分鐘。', cost: '免門票 (鹿仙貝¥200)', highlight: true },
+          { id: 'q2_9', time: '17:00 - 18:00', duration: '60 MIN', icon: '🏨', title: '搭乘包車返回難波 K6 飯店', desc: '全員上車一路睡回難波飯店，約 18:00 抵達並於難波享用晚餐。', cost: '完美收工', highlight: false }
         ]
       },
       {
         id: 'd3',
-        day: 'Day 3',
+        stage: 'STAGE 03',
         date: '1/26 (二)',
-        title: 'KIDS PLAZA 大阪兒童樂園・天滿市場・扇町公園・天神橋筋',
-        fatigue: '★★☆☆☆',
-        badge: '全行程最輕鬆親子日',
+        title: '扇町天滿親子副本：KIDS PLAZA・天滿市場・扇町公園・天神橋筋',
+        bossLevel: '★★☆☆☆',
+        hearts: '❤️❤️🖤🖤🖤',
+        badge: '全行程最輕鬆回血日',
         img: 'https://dolphinkidclub.com/wp-content/uploads/travel/osaka-kids-plaza/osaka-kids-plaza-33.jpg',
-        imgCaption: 'KIDS PLAZA 大阪兒童樂園與緊鄰的扇町公園巨型滑梯',
-        events: [
-          { time: '08:00 - 08:50', title: '享用早餐', desc: '飯店或周邊悠閒吃早餐', tag: '難波' },
-          { time: '08:50 - 09:30', title: '搭乘地鐵前往扇町站', desc: '難波站(千日前線) ➔ 日本橋站轉乘(堺筋線) ➔ 扇町站 2-A 出口連通大樓', tag: '單程 ¥240 / 小童 ¥120' },
-          { time: '09:30 - 12:30', title: 'KIDS PLAZA 放電玩樂', desc: '09:30 開館，室內全館暖氣！科學互動、角色扮演超市與白色城堡攀爬', tag: '大人¥1500/小童¥800/幼¥500' },
-          { time: '12:30 - 14:00', title: '天滿市場（Pulala 天滿）午餐', desc: '體驗在地傳統市場、吃平價壽司與熟食、採買新鮮日本草莓', tag: '步行 4 分鐘' },
-          { time: '14:00 - 15:30', title: '扇町公園戶外放風', desc: '兒童樂園正門口的巨型磨石子溜滑梯與大草坪（視當日風力彈性調整時間）', tag: '免費公園' },
-          { time: '15:30 - 17:30', title: '天神橋筋商店街漫步', desc: '全日本最長拱廊商店街（有遮棚避風），吃中村屋可樂餅、找咖啡廳休息', tag: '平坦好推車' },
-          { time: '17:30 ~', title: '返回難波（或順遊梅田）', desc: '從扇町站搭堺筋線轉千日前線回難波飯店', tag: '回程地鐵' }
+        imgCaption: '📍 KIDS PLAZA 大阪兒童樂園與扇町公園戶外巨型滑梯',
+        quests: [
+          { id: 'q3_1', time: '08:00 - 08:50', duration: '50 MIN', icon: '🍳', title: '晨間補給・享用早餐', desc: '睡飽後在飯店或附近悠閒吃早餐。', cost: '晨間補給', highlight: false },
+          { id: 'q3_2', time: '08:50 - 09:30', duration: '40 MIN', icon: '🚇', title: '搭乘地鐵前往扇町站', desc: '難波站(千日前線 S16➔S17 日本橋站) 站內轉乘 堺筋線(K17➔K12 扇町站) 2-A出口直通大樓。', cost: '來回大人¥480 / 8歲¥240', highlight: false },
+          { id: 'q3_3', time: '09:30 - 12:30', duration: '180 MIN', icon: '🎠', title: 'KIDS PLAZA 大阪兒童樂園放電 3 小時', desc: '09:30 開館即入場！全館暖氣開放，夢幻白色城堡攀爬、超市收銀角色扮演、泡泡科學體驗。', cost: '大人¥1500/小童¥800/4歲¥500', highlight: true },
+          { id: 'q3_4', time: '12:30 - 14:00', duration: '90 MIN', icon: '🍣', title: '天滿市場（Pulala 天滿）在地午餐', desc: '步行 4 分鐘抵達大阪庶民廚房，品嚐平價春駒/奴壽司或定食，順道買便宜日本大草莓！', cost: '傳統市場美食', highlight: true },
+          { id: 'q3_5', time: '14:00 - 15:30', duration: '90 MIN', icon: '🛝', title: '扇町公園戶外巨型溜滑梯放風', desc: '就在兒童樂園門口！趁午後陽光在巨型磨石子滑梯與大草坪奔跑（若風冷可提前轉進商店街）。', cost: '免費入場', highlight: false },
+          { id: 'q3_6', time: '15:30 - 17:30', duration: '120 MIN', icon: '🛍️', title: '天神橋筋商店街漫步＆下午茶', desc: '全日本最長有頂棚拱廊商店街（完全避風），吃中村屋現炸可樂餅、鯛魚燒，找間咖啡廳坐著休息。', cost: '平坦無障礙', highlight: false },
+          { id: 'q3_7', time: '17:30 ~ Late', duration: 'FREE', icon: '🌃', title: '搭地鐵回難波（或體力許可順遊梅田）', desc: '從扇町站搭堺筋線轉回難波休息，若大人還有體力可搭 1 站去梅田逛百貨。', cost: '彈性行程', highlight: false }
         ]
       },
       {
         id: 'd4',
-        day: 'Day 4',
+        stage: 'STAGE 04',
         date: '1/27 (三)',
-        title: '天保山海遊館・樂高樂園・摩天輪・船長線渡輪・環球步行街',
-        fatigue: '★★★★☆',
-        badge: '大阪周遊卡 Day 1',
+        title: '天保山海灣大冒險：海遊館・樂高樂園・摩天輪・船長線・環球步行街',
+        bossLevel: '★★★★☆',
+        hearts: '❤️❤️❤️❤️🖤',
+        badge: '🎫 大阪周遊卡 DAY 1',
         img: 'https://cdn.osaka-info.jp/page_translation/content/54a16ec0-04bf-11e8-ae89-06326e701dd4.jpeg',
-        imgCaption: '天保山大摩天輪與天保山 Marketplace 複合商場',
-        events: [
-          { time: '09:15 - 09:50', title: '搭乘地鐵前往大阪港站', desc: '難波(御堂筋線) ➔ 本町轉乘(中央線) ➔ 大阪港站 1 號出口步行 5 分鐘', tag: '大人周遊卡免費 / 8歲¥150' },
-          { time: '10:00 - 12:15', title: '海遊館 (Kaiyukan)', desc: '10:00 準時開館入場！全室內恆溫看鯨鯊、企鵝與海豹', tag: '大人¥2700/8歲¥1400/幼¥700' },
-          { time: '12:15 - 13:30', title: '天保山市場 Marketplace 午餐', desc: '商場內美食街與浪速美食橫丁，座位寬敞適合 9 人用餐', tag: '室內商場' },
-          { time: '13:30 - 16:00', title: '大阪樂高樂園探索中心', desc: '位於商場 3 樓。大人憑周遊卡免費（需官網預約時段），小孩持預購票入場', tag: '大人免費 / 小孩¥2,200' },
-          { time: '16:00 - 16:45', title: '天保山大摩天輪', desc: '密閉保暖車廂欣賞大阪港灣夕陽美景', tag: '大人周遊卡免費 / 小孩¥1,000' },
-          { time: '16:45 - 17:15', title: '搭乘「船長線 Captain Line」渡輪', desc: '從海遊館西碼頭直達環球影城港（請先確認當日時刻表，入座下層暖氣艙）', tag: '大人免費 / 8歲¥500 / 幼¥400' },
-          { time: '17:30 - 19:30', title: '環球影城步行街 (Universal CityWalk)', desc: '感受美式樂園霓虹夜景、逛環球周邊商店、吃 TAKOPA 章魚燒博物館或美式餐廳', tag: '晚餐與逛街' },
-          { time: '19:30 ~', title: '搭乘 JR 轉阪神電車回難波', desc: 'JR環球城站(夢咲線) ➔ 西九條站轉乘(阪神難波線) ➔ 大阪難波站直達飯店', tag: '大人¥420 / 8歲¥210' }
+        imgCaption: '📍 天保山大摩天輪與 Marketplace 商場（樂高樂園位於 3 樓）',
+        quests: [
+          { id: 'q4_1', time: '08:00 - 08:50', duration: '50 MIN', icon: '☕', title: '飯店早餐・啟動「大阪周遊卡 2 日券」', desc: '6 位大人準備好大阪周遊卡（8歲小童帶 ICOCA 卡），09:15 準時從飯店出發。', cost: '大人啟用周遊卡(¥5,000)', highlight: false },
+          { id: 'q4_2', time: '09:15 - 09:50', duration: '35 MIN', icon: '🚇', title: '搭乘地鐵前往大阪港站', desc: '難波(御堂筋線) ➔ 本町轉乘(中央線) ➔ 大阪港站 1 號電梯出口，步行 5 分鐘至海遊館。', cost: '大人周遊卡免費 / 8歲¥150', highlight: false },
+          { id: 'q4_3', time: '10:00 - 12:15', duration: '135 MIN', icon: '🦈', title: '海遊館 (Kaiyukan) 探索深海巨獸', desc: '10:00 開門第一批入場！全室內溫暖斜坡步道，近距離觀賞鯨鯊、企鵝與海豹。', cost: '大人¥2700/8歲¥1400/幼¥700', highlight: true },
+          { id: 'q4_4', time: '12:15 - 13:30', duration: '75 MIN', icon: '🍛', title: '天保山市場 Marketplace 午餐', desc: '走出海遊館直入旁邊商場，在美食街或「浪速美食橫丁」享用大阪燒、蛋包飯。', cost: '室內溫暖用餐', highlight: false },
+          { id: 'q4_5', time: '13:30 - 16:00', duration: '150 MIN', icon: '🧱', title: '大阪樂高樂園探索中心 (商場 3 樓)', desc: '大人憑周遊卡免費入場（需事先於官網預約時段），3位小孩持預售票進場暢玩 2.5 小時！', cost: '大人周遊卡免費 / 小孩¥2,200', highlight: true },
+          { id: 'q4_6', time: '16:00 - 16:45', duration: '45 MIN', icon: '🎡', title: '搭乘天保山大摩天輪賞港灣夕陽', desc: '密閉防風車廂，高空俯瞰大阪港灣與對岸環球影城黃昏美景（搭前先看一眼碼頭船班表）。', cost: '大人周遊卡免費 / 小孩¥1,000', highlight: true },
+          { id: 'q4_7', time: '16:45 - 17:15', duration: '30 MIN', icon: '⛴️', title: '搭乘「船長線 Captain Line」渡海', desc: '於海遊館西碼頭登船（請入座下層暖氣客艙避寒），約 10 分鐘航程直達環球影城港！', cost: '大人免費 / 8歲¥500 / 幼¥400', highlight: true },
+          { id: 'q4_8', time: '17:30 - 19:30', duration: '120 MIN', icon: '🌎', title: '環球影城步行街 (Universal CityWalk) 晚餐', desc: '免門票感受美式樂園霓虹夜景！逛環球官方商店，晚餐吃 TAKOPA 章魚燒博物館或美式餐廳。', cost: '夜景拍照＋晚餐', highlight: false },
+          { id: 'q4_9', time: '19:30 ~ 20:10', duration: '40 MIN', icon: '🚆', title: '搭乘 JR 夢咲線轉阪神電車回難波', desc: 'JR環球城站 ➔ 西九條站轉乘 阪神難波線 ➔ 大阪難波站直達 K6 飯店休息。', cost: '大人¥420 / 8歲¥210 (刷IC卡)', highlight: false }
         ]
       },
       {
         id: 'd5',
-        day: 'Day 5',
+        stage: 'STAGE 05',
         date: '1/28 (四)',
-        title: '大阪城公園小火車・御座船・通天閣展望台・新世界串炸',
-        fatigue: '★★★☆☆',
-        badge: '大阪周遊卡 Day 2',
+        title: '歷史與下町雙重奏：大阪城小火車・御座船・通天閣・新世界串炸',
+        bossLevel: '★★★☆☆',
+        hearts: '❤️❤️❤️🖤🖤',
+        badge: '🎫 大阪周遊卡 DAY 2',
         img: 'https://asset.japan.travel/image/upload/v1675232782/osaka/Osaka_s_id26_1.jpg',
-        imgCaption: '新世界懷舊商店街巨型招牌與通天閣夜景',
-        events: [
-          { time: '08:50 - 09:40', title: '搭乘地鐵前往森之宮站', desc: '從難波搭地鐵至「森之宮站」3-B 出口（設有電梯，直通小火車起點）', tag: '大人周遊卡免費' },
-          { time: '09:45 - 10:10', title: '搭乘大阪城園區小火車', desc: '從森之宮入口直達天守閣旁「極樂橋」，省下長輩與小孩 20 分鐘上坡路程', tag: '大人¥400 / 兒童¥200' },
-          { time: '10:00 - 11:00', title: '極樂橋御座船劃位 ＋ 天守閣廣場散步', desc: '抵達後第一件事先拿周遊卡換 11:00 船票！空檔在天守閣前合照買熱紅豆湯', tag: '現場劃位' },
-          { time: '11:00 - 11:30', title: '搭乘大阪城御座船', desc: '搭乘金箔仿古船巡遊內護城河 20 分鐘', tag: '大人免費 / 6-15歲¥750' },
-          { time: '11:30 - 12:30', title: '大阪城 JO-TERRACE 或森之宮午餐', desc: '日式木造商場用餐（若去森之宮 Q\'s Mall 2樓還可順道逛西松屋）', tag: '午餐時光' },
-          { time: '12:30 - 13:00', title: '搭乘地鐵前往通天閣', desc: '森之宮站(中央線) ➔ 堺筋本町轉乘(堺筋線) ➔ 惠美須町站 3 號出口', tag: '大人周遊卡免費' },
-          { time: '13:00 - 14:30', title: '通天閣一般室內展望台', desc: '室內暖氣俯瞰大阪市容、摸比利肯神腳底板、逛地下樓層固力果專賣店', tag: '大人免費 / 5-14歲¥800' },
-          { time: '14:30 - 18:30', title: '新世界商店街漫步 ＋ 串炸晚餐', desc: '拍巨型河豚招牌、玩復古射擊打靶；17:00 享用小火車送餐的元祖串炸晚餐', tag: '新世界下町體驗' },
-          { time: '18:30 ~', title: '返回難波・道頓堀水上觀光船 (備案)', desc: '搭地鐵或散步回難波；若體力充沛可憑周遊卡免費搭道頓堀遊船看跑跑人', tag: '大人免費 / 8歲¥500' }
+        imgCaption: '📍 新世界懷舊商店街巨型招牌與通天閣地標',
+        quests: [
+          { id: 'q5_1', time: '08:00 - 08:50', duration: '50 MIN', icon: '🍞', title: '享用早餐・準備出發', desc: '大阪周遊卡第 2 天，今日所有 Osaka Metro 地鐵與主力景點大人全免！', cost: '周遊卡 Day 2', highlight: false },
+          { id: 'q5_2', time: '08:50 - 09:40', duration: '50 MIN', icon: '🚇', title: '搭乘地鐵前往「森之宮站」', desc: '從難波搭地鐵至森之宮站 3-B 出口（設有大型電梯，出站即達小火車起點）。', cost: '大人周遊卡免費 / 8歲¥120', highlight: false },
+          { id: 'q5_3', time: '09:45 - 10:10', duration: '25 MIN', icon: '🚂', title: '搭乘大阪城園區復古小火車', desc: '直接從森之宮搭小火車直達天守閣旁「極樂橋」，完美省下長輩與小孩 20 分鐘上坡路程！', cost: '大人¥400 / 4-12歲¥200 (自費)', highlight: true },
+          { id: 'q5_4', time: '10:00 - 10:30', duration: '30 MIN', icon: '🎫', title: '【關鍵任務】極樂橋旁「御座船售票處」劃位', desc: '御座船無法網約，一下小火車第一件事先拿大人周遊卡換取 11:00 船班乘船券！', cost: '優先劃位', highlight: true },
+          { id: 'q5_5', time: '10:30 - 11:00', duration: '30 MIN', icon: '🏯', title: '大阪城天守閣前廣場散步拍照', desc: '趁開船前空檔與宏偉天守閣拍家族照，買支抹茶冰淇淋或熱紅豆湯暖手。', cost: '廣場取景', highlight: false },
+          { id: 'q5_6', time: '11:00 - 11:30', duration: '30 MIN', icon: '⛵', title: '搭乘金箔「大阪城御座船」遊護城河', desc: '搭乘貼滿金箔的仿古船巡遊內護城河約 20 分鐘，近距離仰望巨石城牆。', cost: '大人免費 / 6-15歲¥750', highlight: true },
+          { id: 'q5_7', time: '11:30 - 12:30', duration: '60 MIN', icon: '🍜', title: '大阪城 JO-TERRACE 或森之宮 Q\'s Mall 午餐', desc: '木造商場吃拉麵/大阪燒；若過馬路去森之宮 Q\'s Mall 2樓還能順道逛「西松屋」買童裝！', cost: '午餐＋西松屋順遊', highlight: false },
+          { id: 'q5_8', time: '12:30 - 13:00', duration: '30 MIN', icon: '🚇', title: '搭乘地鐵前往通天閣（惠美須町站）', desc: '森之宮站(中央線) ➔ 堺筋本町轉乘(堺筋線) ➔ 惠美須町站 3 號出口直達通天閣本通。', cost: '大人周遊卡免費 / 8歲¥120', highlight: false },
+          { id: 'q5_9', time: '13:00 - 14:30', duration: '90 MIN', icon: '🗼', title: '登「通天閣」一般室內展望台', desc: '搭電梯直達暖氣展望台俯瞰大阪市景、摸比利肯福神腳底板，下樓順逛固力果糖果專賣店。', cost: '大人免費 / 5-14歲¥800', highlight: true },
+          { id: 'q5_10', time: '14:30 - 17:00', duration: '150 MIN', icon: '🎯', title: '新世界商店街懷舊漫步＆可前往天王寺動物園、阿倍野', desc: '與巨型河豚、大章魚立體招牌合照，帶小朋友玩復古射擊打靶、撈球遊戲。', cost: '下町風情', highlight: false },
+          { id: 'q5_11', time: '17:00 - 18:30', duration: '90 MIN', icon: '🍢', title: '新世界元祖串炸晚餐 ➔ 返回難波', desc: '挑選有「小火車送餐軌道」的串炸名店（元祖串炸達摩或橫綱），吃完搭地鐵或散步回難波。', cost: '大人周遊卡免費 / 8歲¥150', highlight: true },
+          { id: 'q5_12', time: '18:30 ~ Late', duration: 'BONUS', icon: '🚤', title: '【隱藏關卡】道頓堀水上觀光船 (備案)', desc: '回難波若大家精神還好，去唐吉訶德旁憑周遊卡免費搭船遊道頓堀運河看跑跑人！', cost: '大人免費 / 8歲¥500 / 幼免費', highlight: false }
         ]
       },
       {
         id: 'd6',
-        day: 'Day 6',
+        stage: 'STAGE 06',
         date: '1/29 (五)',
-        title: '萬博紀念公園・太陽之塔・LaLaport EXPOCITY 大採買',
-        fatigue: '★★★☆☆',
-        badge: '阿卡將母嬰採買＋室內動物',
+        title: '太陽之塔與巨型商城：萬博紀念公園 ＋ LaLaport EXPOCITY',
+        bossLevel: '★★★☆☆',
+        hearts: '❤️❤️❤️🖤🖤',
+        badge: '阿卡將採買＋室內動物園',
         img: 'https://taiyounotou-expo70.jp/en/wp-content/themes/en/build/img/page/about/index/intro.jpg',
-        imgCaption: '萬博紀念公園代表地標「太陽之塔」',
-        events: [
-          { time: '08:50 - 10:10', title: '搭乘地鐵與單軌電車前往萬博', desc: '難波站(御堂筋線直通北大阪急行) ➔ 千里中央站轉乘(大阪單軌電車) ➔ 萬博紀念公園站', tag: '來回大人¥1360 / 8歲¥700' },
-          { time: '10:10 - 11:30', title: '萬博紀念公園戶外區', desc: '拍太陽之塔全家福、玩「成功之樹」雙軌滾輪溜滑梯與冒險遊戲場', tag: '大人¥450 / 國中以下免費' },
-          { time: '11:30 - 16:30', title: 'LaLaport EXPOCITY 午餐與大採買', desc: '3樓超大美食街午餐；2樓逛阿卡將本舖 (Akachan)、Uniqlo、Loft；選配玩 NIFREL 水生美世界或日本最大摩天輪', tag: '全室內溫暖商場' },
-          { time: '16:30 ~', title: '返回難波飯店打包行李', desc: '搭單軌電車至千里中央轉御堂筋線直達難波站，晚餐後整理戰利品入箱', tag: '避開下班尖峰' }
+        imgCaption: '📍 萬博紀念公園震撼地標「太陽之塔」與緊鄰的 EXPOCITY',
+        quests: [
+          { id: 'q6_1', time: '08:00 - 08:50', duration: '50 MIN', icon: '🥐', title: '飯店早餐・準備出發', desc: '倒數第二天大採購與放電日，記得攜帶大購物袋與護照（辦理退稅用）。', cost: '準備退稅護照', highlight: false },
+          { id: 'q6_2', time: '08:50 - 10:10', duration: '80 MIN', icon: '🚝', title: '搭乘御堂筋線轉「大阪單軌電車」至萬博', desc: '難波站搭御堂筋線（直通北大阪急行）至千里中央站，轉乘大阪單軌電車 2 站至萬博紀念公園站。', cost: '單程大人¥680 / 8歲¥350', highlight: false },
+          { id: 'q6_3', time: '10:10 - 11:30', duration: '80 MIN', icon: '🌞', title: '萬博紀念公園：太陽之塔＆成功之樹滾輪滑梯', desc: '與巨型太陽之塔拍全家福，帶孩子去「成功之樹」大溜滑梯與複合遊戲場跑跳放電 1 小時。', cost: '大人¥450 / 國中以下免費', highlight: true },
+          { id: 'q6_4', time: '11:30 - 16:30', duration: '300 MIN', icon: '🛍️', title: 'LaLaport EXPOCITY 美食街與全館大採買', desc: '進室內吹暖氣！3樓超大美食街午餐；2樓狂逛「阿卡將本舖」；選配參觀 NIFREL 水生美世界（近距離看水豚白虎）或搭日本最高摩天輪。', cost: '選配 NIFREL / 摩天輪', highlight: true },
+          { id: 'q6_5', time: '16:30 - 17:45', duration: '75 MIN', icon: '🚇', title: '搭乘單軌電車轉御堂筋線返回難波', desc: '萬博紀念公園站(單軌¥250) ➔ 千里中央站轉乘 御堂筋線(¥430) 直達難波站 25 號出口回飯店。', cost: '回程大人¥680 / 8歲¥350', highlight: false },
+          { id: 'q6_6', time: '18:00 ~ Late', duration: 'FREE', icon: '🧳', title: '難波晚餐・戰利品終極打包', desc: '享用大阪最後一晚美食，回 K6 飯店將所有戰利品打包裝箱。', cost: '行李打包夜', highlight: false }
         ]
       },
       {
         id: 'd7',
-        day: 'Day 7',
+        stage: 'STAGE 07',
         date: '1/30 (六)',
-        title: '難波八阪神社巨型獅子頭・唐吉訶德補貨・包車前往關西機場',
-        fatigue: '★★☆☆☆',
-        badge: '專車送機・優雅返台',
+        title: '最終章：難波八阪神社巨型獅子頭・唐吉訶德補貨・平安返台',
+        bossLevel: '★★☆☆☆',
+        hearts: '❤️❤️🖤🖤🖤',
+        badge: '專車送機・全破關結局',
         img: 'https://travel.gaijinpot.com/app/uploads/sites/6/2016/09/iStock-900771306.jpg',
-        imgCaption: '難波八阪神社高達 12 公尺的巨型「獅子殿」',
-        events: [
-          { time: '07:00 - 08:00', title: '提早享用早餐', desc: '晨間梳洗與早餐，大型行李先留在飯店房間或大廳', tag: '難波' },
-          { time: '08:00 - 09:10', title: '散步參拜「難波八阪神社」', desc: '從飯店散步約 12-15 分鐘抵達。08:30 人潮最少，盡情與巨型獅子殿合照買御守', tag: '免門票' },
-          { time: '09:10 - 10:00', title: '道頓堀唐吉訶德最後採買', desc: '順路散步至 24 小時營業的唐吉訶德，早上結帳退稅完全不用排隊', tag: '步行 4 分鐘回飯店' },
-          { time: '10:00 - 10:30', title: '返回 K6 飯店領取行李・預備上車', desc: '10:00 回到飯店拿行李辦理退房，10:30 專車準時出發', tag: '從容不迫' },
-          { time: '10:30 - 11:30', title: '搭乘包車前往關西國際機場 T1', desc: '已安排送機包車直達第一航廈報到櫃台', tag: '包車 ¥13,050/車' },
-          { time: '14:30 - 16:45', title: '搭乘中華航空 CI0153 返抵台灣', desc: '14:30 關西 T1 起飛 ➔ 16:45 抵達桃園機場 T2，轉乘機捷與高鐵平安返家', tag: '平安賦歸' }
+        imgCaption: '📍 難波八阪神社高達 12 公尺的招福「巨型獅子殿」',
+        quests: [
+          { id: 'q7_1', time: '07:00 - 08:00', duration: '60 MIN', icon: '🍙', title: '提早享用早餐・整理隨身包', desc: '大件行李先留在飯店內，全體輕裝準備晨間散步。', cost: '空手輕裝', highlight: false },
+          { id: 'q7_2', time: '08:00 - 08:30', duration: '30 MIN', icon: '🚶', title: '晨間散步前往「難波八阪神社」', desc: '從 K6 飯店往南走元町平路約 12～15 分鐘即可抵達（或搭四橋線 1 站至大國町站）。', cost: '散步 ¥0', highlight: false },
+          { id: 'q7_3', time: '08:30 - 09:10', duration: '40 MIN', icon: '🦁', title: '難波八阪神社・巨型獅子殿參拜拍照', desc: '08:30 沒什麼觀光客！盡情與張大嘴吸走厄運的巨型獅子頭拍全家福、買獅子御守。', cost: '免費參拜', highlight: true },
+          { id: 'q7_4', time: '09:10 - 09:30', duration: '20 MIN', icon: '🚶', title: '順路散步前往道頓堀唐吉訶德', desc: '沿著御堂筋往北走回道頓堀方向（約 10～12 分鐘）。', cost: '順路動線', highlight: false },
+          { id: 'q7_5', time: '09:30 - 10:00', duration: '30 MIN', icon: '🐧', title: '唐吉訶德 24H 晨間最後掃貨', desc: '早上逛唐吉訶德完全不擠、退稅結帳免排隊，最後補齊零食藥妝！', cost: '免排隊掃貨', highlight: true },
+          { id: 'q7_6', time: '10:00 - 10:30', duration: '30 MIN', icon: '🏨', title: '步行 4 分鐘回 K6 飯店・領行李等包車', desc: '從唐吉訶德走回飯店僅 270 公尺（4分鐘），把最後戰利品塞進行李箱辦理退房。', cost: '從容退房', highlight: false },
+          { id: 'q7_7', time: '10:30 - 11:30', duration: '60 MIN', icon: '🚐', title: '搭乘送機包車直達關西機場第一航廈', desc: '10:30 專車準時從飯店出發，11:30 輕鬆抵達關西機場 T1（距離起飛整整 3 小時）。', cost: '包車 ¥13,050 (每人¥1,450)', highlight: true },
+          { id: 'q7_8', time: '14:30 - 16:45', duration: '195 MIN', icon: '🏆', title: '搭乘中華航空 CI 0153 返抵台灣 (GAME CLEAR!)', desc: '14:30 關西 T1 起飛 ➔ 16:45 抵達桃園機場 T2，轉乘機捷與高鐵返回台南溫暖的家！', cost: 'MISSION COMPLETE!', highlight: true }
         ]
       }
     ];
 
-    const budgetItems = [
-      { cat: '台灣交通 (NT$)', name: '高鐵（台南↔桃園 來回）', a: 2380, c8: 1190, c6: 1190, c4: 0, curr: 'NT$', type: 'tw', note: '對號座單程$1,190/孩童$595/4歲不佔位免費' },
-      { cat: '台灣交通 (NT$)', name: '桃園機場捷運（來回）', a: 70, c8: 36, c6: 36, c4: 0, curr: 'NT$', type: 'tw', note: '單程$35/6-11歲半價$18/未滿6歲免費' },
-      { cat: '1/24 (日)', name: '關西機場 ➔ 難波飯店包車', a: 1660, c8: 1660, c6: 1660, c4: 1660, curr: '¥', type: 'charter', note: '全車 ¥14,940 除以 9 人' },
-      { cat: '1/25 (一)', name: '京都、奈良 10人座包車', a: 6550, c8: 6550, c6: 6550, c4: 6550, curr: '¥', type: 'charter', note: '全車 ¥58,950 除以 9 人' },
+    // 費用明細資料 (完全對齊試算表最新欄位與數字)
+    const shopItems = [
+      { cat: '台灣交通', name: '高鐵（台南↔桃園 來回）', a: 2380, c8: 1190, c6: 1190, c4: 0, curr: 'NT$', type: 'tw', note: '對號座單程$1,190 / 孩童半價$595 / 4歲不佔位免費' },
+      { cat: '台灣交通', name: '桃園機場捷運（來回）', a: 70, c8: 36, c6: 36, c4: 0, curr: 'NT$', type: 'tw', note: '單程$35 / 6-11歲半價$18 / 未滿6歲免費' },
+      { cat: '1/24 (日)', name: '🚐 關西機場 ➔ 難波飯店接機包車', a: 1660, c8: 1660, c6: 1660, c4: 1660, curr: '¥', type: 'charter', note: '全車 ¥14,940 除以 9 人均攤' },
+      { cat: '1/25 (一)', name: '🚐 京都、奈良 10人座一日包車', a: 6550, c8: 6550, c6: 6550, c4: 6550, curr: '¥', type: 'charter', note: '全車 ¥58,950 除以 9 人均攤' },
       { cat: '1/25 (一)', name: '清水寺 門票', a: 500, c8: 200, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '大人¥500 / 中小學生¥200 / 學齡前免費' },
       { cat: '1/26 (二)', name: '地鐵：難波 ↔ 扇町（來回）', a: 480, c8: 240, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '6歲於日本屬未就學兒，地鐵免費' },
       { cat: '1/26 (二)', name: 'KIDS PLAZA 大阪兒童樂園', a: 1500, c8: 800, c6: 800, c4: 500, curr: '¥', type: 'jp', note: '大人¥1,500 / 6-15歲¥800 / 3-5歲¥500' },
-      { cat: '1/27～28', name: '🎫 大阪周遊卡（連續 2 日券）', a: 5000, c8: 0, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '僅大人購買！包辦兩天地鐵與5大免費設施' },
+      { cat: '1/27～28', name: '🎫 大阪周遊卡（連續 2 日券）', a: 5000, c8: 0, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '大人神級裝備！包辦兩天地鐵與5大免費設施' },
       { cat: '1/27 (三)', name: '地鐵：難波 ➔ 大阪港（單程）', a: 0, c8: 150, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '大人周遊卡免費；8歲小學生 ¥150' },
       { cat: '1/27 (三)', name: '海遊館 門票', a: 2700, c8: 1400, c6: 700, c4: 700, curr: '¥', type: 'jp', note: '周遊卡不含。大人¥2,700/7-15歲¥1,400/3-6歲¥700' },
-      { cat: '1/27 (三)', name: '大阪樂高樂園 門票', a: 0, c8: 2200, c6: 2200, c4: 2200, curr: '¥', type: 'jp', note: '大人周遊卡平日免費(需預約)；兒童預購約¥2,200' },
+      { cat: '1/27 (三)', name: '大阪樂高樂園 門票', a: 0, c8: 2200, c6: 2200, c4: 2200, curr: '¥', type: 'jp', note: '大人周遊卡平日免費(官網預約)；兒童預購¥2,200' },
       { cat: '1/27 (三)', name: '天保山大摩天輪', a: 0, c8: 1000, c6: 1000, c4: 1000, curr: '¥', type: 'jp', note: '大人周遊卡免費；滿 3 歲以上 ¥1,000' },
       { cat: '1/27 (三)', name: '船長線 Captain Line（單程船票）', a: 0, c8: 500, c6: 400, c4: 400, curr: '¥', type: 'jp', note: '大人周遊卡免費；小學生¥500 / 幼兒¥400' },
       { cat: '1/27 (三)', name: '回程電車：JR環球城➔西九條➔難波', a: 420, c8: 210, c6: 0, c4: 0, curr: '¥', type: 'jp', note: 'JR ¥180 + 阪神 ¥240 (非周遊卡範圍)' },
@@ -274,73 +474,181 @@
       { cat: '1/28 (四)', name: '道頓堀水上觀光船 船票', a: 0, c8: 500, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '大人周遊卡免費；小學生¥500 / 學齡前免費' },
       { cat: '1/29 (五)', name: '交通：難波 ↔ 萬博公園（來回）', a: 1360, c8: 700, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '地鐵北急¥430 + 單軌¥250 (來回×2)' },
       { cat: '1/29 (五)', name: '萬博紀念公園 門票', a: 450, c8: 0, c6: 0, c4: 0, curr: '¥', type: 'jp', note: '大人¥450 / 國中生以下免費' },
-      { cat: '1/30 (六)', name: '飯店 ➔ 關西機場送機包車', a: 1450, c8: 1450, c6: 1450, c4: 1450, curr: '¥', type: 'charter', note: '全車 ¥13,050 除以 9 人' },
-      { cat: '選配體驗', name: '1/25 京都璃光和服租借', a: 9900, c8: 5500, c6: 5500, c4: 5500, curr: '¥', type: 'opt', note: '試算表設定：大人¥9,900 / 兒童¥5,500' },
-      { cat: '選配體驗', name: '1/29 NIFREL 水生美世界', a: 2400, c8: 1200, c6: 700, c4: 700, curr: '¥', type: 'opt', note: '大人¥2,400 / 小學生¥1,200 / 幼兒¥700' },
-      { cat: '選配體驗', name: '1/29 OSAKA WHEEL 摩天輪', a: 1000, c8: 1000, c6: 1000, c4: 1000, curr: '¥', type: 'opt', note: '4 歲以上每人 ¥1,000' }
+      { cat: '1/30 (六)', name: '🚐 飯店 ➔ 關西機場送機包車', a: 1450, c8: 1450, c6: 1450, c4: 1450, curr: '¥', type: 'charter', note: '全車 ¥13,050 除以 9 人均攤' },
+      { cat: '選配裝備', name: '👘 1/25 京都璃光和服租借', a: 9900, c8: 5500, c6: 5500, c4: 5500, curr: '¥', type: 'opt', note: '試算表設定：大人¥9,900 / 兒童¥5,500' },
+      { cat: '選配裝備', name: '🐯 1/29 NIFREL 水生美世界', a: 2400, c8: 1200, c6: 700, c4: 700, curr: '¥', type: 'opt', note: '大人¥2,400 / 小學生¥1,200 / 幼兒¥700' },
+      { cat: '選配裝備', name: '🎡 1/29 OSAKA WHEEL 摩天輪', a: 1000, c8: 1000, c6: 1000, c4: 1000, curr: '¥', type: 'opt', note: '4 歲以上每人 ¥1,000' }
     ];
 
-    function renderItinerary(filterId = 'all') {
-      const container = document.getElementById('itinerary-container');
-      const filtered = filterId === 'all' ? itineraryData : itineraryData.filter(d => d.id === filterId);
-      container.innerHTML = filtered.map(day => `
-        <article class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="relative h-56 md:h-72 bg-slate-900">
-            <img src="${day.img}" alt="${day.title}" class="w-full h-full object-cover opacity-90">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-            <div class="absolute top-4 left-4 flex gap-2">
-              <span class="bg-rose-600 text-white text-xs font-black px-3 py-1 rounded-full shadow">${day.day} • ${day.date}</span>
-              <span class="bg-white/90 text-slate-800 text-xs font-bold px-3 py-1 rounded-full shadow">${day.badge}</span>
-            </div>
-            <div class="absolute bottom-4 left-4 right-4 text-white">
-              <div class="text-xs text-amber-300 font-bold mb-1">疲累程度：${day.fatigue}</div>
-              <h2 class="text-xl md:text-2xl font-black leading-snug">${day.title}</h2>
-              <p class="text-xs text-white/75 mt-1">📷 ${day.imgCaption}</p>
-            </div>
-          </div>
-          <div class="p-5 md:p-6 divide-y divide-slate-100">
-            ${day.events.map(ev => `
-              <div class="py-3.5 first:pt-0 last:pb-0 flex flex-col md:flex-row md:items-center justify-between gap-2">
-                <div class="flex items-start gap-3.5">
-                  <span class="shrink-0 w-28 text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg text-center mt-0.5">${ev.time}</span>
-                  <div>
-                    <h3 class="font-bold text-slate-800 text-sm md:text-base">${ev.title}</h3>
-                    <p class="text-xs md:text-sm text-slate-500 mt-0.5 leading-relaxed">${ev.desc}</p>
-                  </div>
-                </div>
-                <span class="self-start md:self-center shrink-0 text-xs font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">${ev.tag}</span>
-              </div>
-            `).join('')}
-          </div>
-        </article>
-      `).join('');
+    // 讀取已破關打卡狀態
+    let clearedQuests = JSON.parse(localStorage.getItem('osaka2027_cleared') || '{}');
+    let currentFilter = 'all';
+
+    function toggleQuest(questId) {
+      if (clearedQuests[questId]) {
+        delete clearedQuests[questId];
+      } else {
+        clearedQuests[questId] = true;
+      }
+      localStorage.setItem('osaka2027_cleared', JSON.stringify(clearedQuests));
+      renderStages(currentFilter);
+      updateExpBar();
     }
 
-    function renderBudget() {
-      const includeCharter = document.getElementById('toggle-charter').checked;
-      const includeOpt = document.getElementById('toggle-optional').checked;
+    function resetProgress() {
+      if (confirm('確定要重置所有任務的打卡進度嗎？')) {
+        clearedQuests = {};
+        localStorage.removeItem('osaka2027_cleared');
+        renderStages(currentFilter);
+        updateExpBar();
+      }
+    }
+
+    function updateExpBar() {
+      const totalQuests = stagesData.reduce((acc, s) => acc + s.quests.length, 0);
+      const doneCount = Object.keys(clearedQuests).length;
+      const pct = Math.round((doneCount / totalQuests) * 100);
+      document.getElementById('global-exp-bar').style.width = pct + '%';
+      document.getElementById('global-exp-text').innerText = `${pct}% (${doneCount}/${totalQuests})`;
+    }
+
+    function renderStages(filterId = 'all') {
+      currentFilter = filterId;
+      const container = document.getElementById('stages-container');
+      const list = filterId === 'all' ? stagesData : stagesData.filter(s => s.id === filterId);
+
+      container.innerHTML = list.map(st => {
+        const stageDone = st.quests.filter(q => clearedQuests[q.id]).length;
+        const stagePct = Math.round((stageDone / st.quests.length) * 100);
+
+        return `
+          <article class="pixel-box overflow-hidden">
+            <!-- 關卡頂部橫幅與當地圖片 -->
+            <div class="relative h-60 md:h-80 bg-black border-b-4 border-white">
+              <img src="${st.img}" alt="${st.title}" class="w-full h-full object-cover opacity-85">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0d0e15] via-black/40 to-transparent"></div>
+
+              <!-- 左上角關卡編號與徽章 -->
+              <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                <span class="bg-amber-400 text-black font-pixel-en text-xs px-3 py-1.5 border-2 border-black shadow-md">
+                  ${st.stage} • ${st.date}
+                </span>
+                <span class="bg-rose-600 text-white text-xs font-bold px-3 py-1.5 border-2 border-white shadow-md">
+                  ${st.badge}
+                </span>
+              </div>
+
+              <!-- 右上角疲累度愛心血條 -->
+              <div class="absolute top-4 right-4 bg-black/80 border-2 border-white px-3 py-1 text-xs">
+                <span class="text-slate-300 mr-1">疲累度</span>
+                <span>${st.hearts}</span>
+              </div>
+
+              <!-- 底部關卡標題与進度 -->
+              <div class="absolute bottom-4 left-4 right-4 flex flex-col md:flex-row md:items-end justify-between gap-2">
+                <div>
+                  <h2 class="text-xl md:text-2xl font-black text-white drop-shadow-[2px_2px_0_#000]">${st.title}</h2>
+                  <p class="text-xs text-cyan-300 mt-1">${st.imgCaption}</p>
+                </div>
+                <div class="bg-black/80 border-2 border-cyan-400 px-3 py-1.5 text-xs shrink-0 self-start md:self-end">
+                  <span class="font-pixel-en text-[10px] text-cyan-300">STAGE CLEAR: ${stageDone}/${st.quests.length} (${stagePct}%)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 強化版 RPG 時間軸區域 -->
+            <div class="p-5 md:p-8 bg-[#151828]">
+              <div class="flex items-center gap-2 mb-6">
+                <span class="font-pixel-en text-xs text-amber-400">⏳ TIME ATTACK TIMELINE</span>
+                <div class="h-0.5 flex-1 bg-slate-700"></div>
+                <span class="text-xs text-slate-400">點擊卡片可切換破關狀態</span>
+              </div>
+
+              <div class="timeline-track space-y-5">
+                ${st.quests.map((q, idx) => {
+                  const isCleared = !!clearedQuests[q.id];
+                  return `
+                    <div onclick="toggleQuest('${q.id}')" class="relative ${isCleared ? 'quest-cleared' : ''}">
+                      <!-- 時間軸發光節點 -->
+                      <div class="timeline-node">
+                        ${isCleared ? '✓' : `<span class="font-pixel-en text-[9px] text-amber-300">${idx + 1}</span>`}
+                      </div>
+
+                      <!-- 任務內容卡片 -->
+                      <div class="quest-card p-4 rounded-none ${q.highlight && !isCleared ? 'border-l-8 border-l-amber-400' : ''}">
+                        <!-- 第一行：時間膠囊 + 停留時間 + 破關狀態 -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <span class="bg-rose-600 text-white font-pixel-en text-xs md:text-sm px-3 py-1 border-2 border-white shadow-[2px_2px_0_#000]">
+                              🕒 ${q.time}
+                            </span>
+                            <span class="bg-cyan-950 text-cyan-300 border border-cyan-400 font-pixel-en text-[10px] px-2.5 py-1">
+                              ⏱️ 停留/耗時: ${q.duration}
+                            </span>
+                            ${q.highlight ? '<span class="bg-amber-400 text-black text-[11px] font-black px-2 py-0.5">★ 關鍵主線</span>' : ''}
+                          </div>
+
+                          <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold px-2.5 py-1 bg-black/60 border border-slate-500 text-amber-300">
+                              💰 ${q.cost}
+                            </span>
+                            <span class="font-pixel-en text-[10px] px-2 py-1 border ${isCleared ? 'bg-green-600 text-white border-white' : 'bg-slate-800 text-slate-400 border-slate-600'}">
+                              ${isCleared ? '✨ CLEARED!' : '⭕ READY'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <!-- 第二行：任務標題與說明 -->
+                        <div class="flex items-start gap-3 mt-2">
+                          <div class="text-2xl shrink-0 mt-0.5">${q.icon}</div>
+                          <div>
+                            <h3 class="text-base md:text-lg font-black ${isCleared ? 'line-through text-green-300' : 'text-white'}">
+                              ${q.title}
+                            </h3>
+                            <p class="text-xs md:text-sm text-slate-300 mt-1 leading-relaxed">
+                              ${q.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function renderShop() {
+      const incCharter = document.getElementById('chk-charter').checked;
+      const incOpt = document.getElementById('chk-opt').checked;
       const rate = 0.215;
 
       let tw = { a: 2450, c8: 1226, c6: 1226, c4: 0 };
       let jp = { a: 0, c8: 0, c6: 0, c4: 0 };
 
-      const tbody = document.getElementById('budget-table-body');
-      let rowsHtml = '';
+      const tbody = document.getElementById('shop-table-body');
+      let rows = '';
 
-      budgetItems.forEach(item => {
-        if (item.type === 'charter' && !includeCharter) return;
-        if (item.type === 'opt' && !includeOpt) return;
+      shopItems.forEach(item => {
+        if (item.type === 'charter' && !incCharter) return;
+        if (item.type === 'opt' && !incOpt) return;
         if (item.type !== 'tw') {
           jp.a += item.a; jp.c8 += item.c8; jp.c6 += item.c6; jp.c4 += item.c4;
         }
-        rowsHtml += `
-          <tr class="hover:bg-slate-50">
-            <td class="p-3 font-medium"><span class="text-xs text-slate-400 block">${item.cat}</span>${item.name}</td>
-            <td class="p-3 text-right font-semibold">${item.curr}${item.a.toLocaleString()}</td>
-            <td class="p-3 text-right">${item.curr}${item.c8.toLocaleString()}</td>
-            <td class="p-3 text-right">${item.curr}${item.c6.toLocaleString()}</td>
-            <td class="p-3 text-right">${item.curr}${item.c4.toLocaleString()}</td>
-            <td class="p-3 text-xs text-slate-500">${item.note}</td>
+        rows += `
+          <tr class="hover:bg-white/5">
+            <td class="p-3">
+              <span class="text-[11px] text-cyan-400 block">${item.cat}</span>
+              <span class="font-bold text-white">${item.name}</span>
+            </td>
+            <td class="p-3 text-right font-bold text-amber-300">${item.curr}${item.a.toLocaleString()}</td>
+            <td class="p-3 text-right text-slate-200">${item.curr}${item.c8.toLocaleString()}</td>
+            <td class="p-3 text-right text-slate-200">${item.curr}${item.c6.toLocaleString()}</td>
+            <td class="p-3 text-right text-slate-200">${item.curr}${item.c4.toLocaleString()}</td>
+            <td class="p-3 text-xs text-slate-400">${item.note}</td>
           </tr>
         `;
       });
@@ -352,76 +660,90 @@
         c4: tw.c4 + Math.round(jp.c4 * rate)
       };
 
-      rowsHtml += `
-        <tr class="bg-amber-50/70 font-bold text-slate-900 border-t-2 border-slate-200">
-          <td class="p-3">🇯🇵 日本日幣個人小計 (¥)</td>
+      rows += `
+        <tr class="bg-slate-900 font-bold text-cyan-300 border-t-2 border-white">
+          <td class="p-3">🇯🇵 日本日圓個人合計 (¥)</td>
           <td class="p-3 text-right">¥${jp.a.toLocaleString()}</td>
           <td class="p-3 text-right">¥${jp.c8.toLocaleString()}</td>
           <td class="p-3 text-right">¥${jp.c6.toLocaleString()}</td>
           <td class="p-3 text-right">¥${jp.c4.toLocaleString()}</td>
-          <td class="p-3 text-xs text-slate-600">全團日幣合計：¥${(jp.a*6 + jp.c8 + jp.c6 + jp.c4).toLocaleString()}</td>
+          <td class="p-3 text-xs text-cyan-200">全團日幣總計：¥${(jp.a*6 + jp.c8 + jp.c6 + jp.c4).toLocaleString()}</td>
         </tr>
-        <tr class="bg-rose-50 font-black text-rose-700 text-base">
-          <td class="p-3">🇹🇼 個人總計 (台灣+日本折合NT$)</td>
+        <tr class="bg-rose-950/90 font-black text-amber-300 text-sm md:text-base border-t-2 border-amber-400">
+          <td class="p-3">🪙 個人總金幣 (台灣NT$ + 日本折合NT$)</td>
           <td class="p-3 text-right">NT$ ${ntd.a.toLocaleString()}</td>
           <td class="p-3 text-right">NT$ ${ntd.c8.toLocaleString()}</td>
           <td class="p-3 text-right">NT$ ${ntd.c6.toLocaleString()}</td>
           <td class="p-3 text-right">NT$ ${ntd.c4.toLocaleString()}</td>
-          <td class="p-3 text-xs font-bold text-rose-600">全團 6大3小 (不含停車)：NT$ ${(ntd.a*6 + ntd.c8 + ntd.c6 + ntd.c4).toLocaleString()}</td>
+          <td class="p-3 text-xs text-white">全團 9 人合計：NT$ ${(ntd.a*6 + ntd.c8 + ntd.c6 + ntd.c4).toLocaleString()} (未含停車)</td>
         </tr>
       `;
-      tbody.innerHTML = rowsHtml;
+      tbody.innerHTML = rows;
 
+      // 三家庭分隊總計 (含高鐵7天停車費 NT$560/台)
       const jiahong = ntd.a * 2 + ntd.c4 + 560;
       const zonghan = ntd.a * 2 + ntd.c8 + ntd.c6 + 560;
       const xiaolin = ntd.a * 2;
 
-      document.getElementById('family-cards').innerHTML = `
-        <div class="bg-gradient-to-br from-rose-50 to-amber-50 p-4 rounded-2xl border border-rose-200">
-          <div class="text-xs font-bold text-rose-600">👨‍👩‍👧 嘉宏家 (2大 + 4歲幼童)</div>
-          <div class="text-2xl font-black text-slate-900 mt-1">NT$ ${jiahong.toLocaleString()}</div>
-          <div class="text-xs text-slate-500 mt-1">含高鐵停車7天 ($560)｜日幣約 ¥${(jp.a*2 + jp.c4).toLocaleString()}</div>
+      document.getElementById('guild-cards').innerHTML = `
+        <div class="bg-black/80 border-2 border-cyan-400 p-4 shadow-[4px_4px_0_#000]">
+          <div class="font-pixel-en text-[10px] text-cyan-300 mb-1">TEAM 01 • 嘉宏家 (2大 + 4歲精靈)</div>
+          <div class="text-2xl font-black text-amber-300">NT$ ${jiahong.toLocaleString()}</div>
+          <div class="text-xs text-slate-400 mt-1">含高鐵停車7天 ($560)｜日幣需求：¥${(jp.a*2 + jp.c4).toLocaleString()}</div>
         </div>
-        <div class="bg-gradient-to-br from-rose-50 to-amber-50 p-4 rounded-2xl border border-rose-200">
-          <div class="text-xs font-bold text-rose-600">👨‍👩‍👧‍👦 宗漢家 (2大 + 8歲&6歲小童)</div>
-          <div class="text-2xl font-black text-slate-900 mt-1">NT$ ${zonghan.toLocaleString()}</div>
-          <div class="text-xs text-slate-500 mt-1">含高鐵停車7天 ($560)｜日幣約 ¥${(jp.a*2 + jp.c8 + jp.c6).toLocaleString()}</div>
+        <div class="bg-black/80 border-2 border-pink-400 p-4 shadow-[4px_4px_0_#000]">
+          <div class="font-pixel-en text-[10px] text-pink-300 mb-1">TEAM 02 • 宗漢家 (2大 + 8歲&6歲)</div>
+          <div class="text-2xl font-black text-amber-300">NT$ ${zonghan.toLocaleString()}</div>
+          <div class="text-xs text-slate-400 mt-1">含高鐵停車7天 ($560)｜日幣需求：¥${(jp.a*2 + jp.c8 + jp.c6).toLocaleString()}</div>
         </div>
-        <div class="bg-gradient-to-br from-rose-50 to-amber-50 p-4 rounded-2xl border border-rose-200">
-          <div class="text-xs font-bold text-rose-600">👫 曉琳家 (2位大人)</div>
-          <div class="text-2xl font-black text-slate-900 mt-1">NT$ ${xiaolin.toLocaleString()}</div>
-          <div class="text-xs text-slate-500 mt-1">高鐵共乘｜日幣約 ¥${(jp.a*2).toLocaleString()}</div>
+        <div class="bg-black/80 border-2 border-emerald-400 p-4 shadow-[4px_4px_0_#000]">
+          <div class="font-pixel-en text-[10px] text-emerald-300 mb-1">TEAM 03 • 曉琳家 (2位大人)</div>
+          <div class="text-2xl font-black text-amber-300">NT$ ${xiaolin.toLocaleString()}</div>
+          <div class="text-xs text-slate-400 mt-1">高鐵共乘｜日幣需求：¥${(jp.a*2).toLocaleString()}</div>
         </div>
       `;
     }
 
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.className = 'tab-btn shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+    function switchStage(stageId) {
+      document.querySelectorAll('#stage-tabs .pixel-btn').forEach(btn => {
+        btn.classList.remove('active-tab');
       });
-      const activeBtn = document.getElementById('tab-' + tabId);
-      activeBtn.className = 'tab-btn shrink-0 px-4 py-1.5 rounded-full text-sm font-bold bg-rose-600 text-white shadow-sm transition';
+      document.getElementById('tab-' + stageId).classList.add('active-tab');
 
-      const itContainer = document.getElementById('itinerary-container');
-      const bgSection = document.getElementById('budget-section');
+      const stContainer = document.getElementById('stages-container');
+      const shSection = document.getElementById('shop-section');
 
-      if (tabId === 'budget') {
-        itContainer.style.display = 'none';
-        bgSection.style.display = 'block';
-      } else if (tabId === 'all') {
-        itContainer.style.display = 'block';
-        bgSection.style.display = 'block';
-        renderItinerary('all');
+      if (stageId === 'shop') {
+        stContainer.style.display = 'none';
+        shSection.style.display = 'block';
+      } else if (stageId === 'all') {
+        stContainer.style.display = 'block';
+        shSection.style.display = 'block';
+        renderStages('all');
       } else {
-        itContainer.style.display = 'block';
-        bgSection.style.display = 'none';
-        renderItinerary(tabId);
+        stContainer.style.display = 'block';
+        shSection.style.display = 'none';
+        renderStages(stageId);
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    renderItinerary('all');
-    renderBudget();
+    function toggleCRT() {
+      const layer = document.getElementById('crt-layer');
+      const btn = document.getElementById('crt-btn');
+      if (layer.style.display === 'none') {
+        layer.style.display = 'block';
+        btn.innerText = '📺 CRT: ON';
+      } else {
+        layer.style.display = 'none';
+        btn.innerText = '📺 CRT: OFF';
+      }
+    }
+
+    // 初始化啟動
+    renderStages('all');
+    renderShop();
+    updateExpBar();
   </script>
 </body>
 </html>
